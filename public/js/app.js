@@ -1896,6 +1896,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -1910,6 +1914,7 @@ __webpack_require__.r(__webpack_exports__);
     mytable: function mytable() {
       $(function () {
         $('#example').DataTable();
+        $('[data-toggle="tooltip"]').tooltip();
       });
     },
     getUsers: function getUsers() {
@@ -52600,7 +52605,35 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn btn-primary btn-sm",
+          staticClass: "btn btn-info btn-sm",
+          attrs: {
+            type: "button",
+            "data-toggle": "tooltip",
+            "data-placement": "top",
+            title: "Mostrar"
+          }
+        },
+        [_c("i", { staticClass: "fa fa-eye" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-warning btn-sm",
+          attrs: {
+            type: "button",
+            "data-toggle": "tooltip",
+            "data-placement": "top",
+            title: "Editar"
+          }
+        },
+        [_c("i", { staticClass: "fa fa-pencil" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger btn-sm",
           attrs: {
             type: "button",
             "data-toggle": "tooltip",
