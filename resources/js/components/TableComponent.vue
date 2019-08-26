@@ -5,7 +5,7 @@
          <th scope="col">#</th>
          <th scope="col">Name</th>
          <th scope="col">Email</th>
-      
+        <th scope="col">Acciones</th>
        </tr>
      </thead>
      <tbody>
@@ -13,7 +13,7 @@
          <th scope="row">{{ user.id}}</th>
          <td>{{user.name}}</td>
          <td>{{user.email}}</td>
-        
+         <td> <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fa fa-trash"></i></button></td>
        </tr>
        
      </tbody>
