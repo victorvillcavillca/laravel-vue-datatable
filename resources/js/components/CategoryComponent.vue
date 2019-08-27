@@ -83,6 +83,7 @@
 <script>
 
     import datables from 'datatables';
+    import toastr from 'toastr';
 
     export default {
         mounted() {
@@ -132,7 +133,9 @@
                 const categoryServidor = res.data;
                 this.categories.push(categoryNueva);
 
+                
                 $('#exampleModal').modal('hide');
+                toastr.success('Nueva categoria registrada');
               // this.table.ajax.reload();
 
                 // this.getCategories();
