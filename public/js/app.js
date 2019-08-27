@@ -1941,11 +1941,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2009,45 +2004,51 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     editarFormulario: function editarFormulario(item) {
-      this.nota.nombre = item.nombre;
-      this.nota.descripcion = item.descripcion;
-      this.nota.id = item.id;
+      this.category.name = item.name;
+      this.category.description = item.description;
+      this.category.id = item.id;
       this.modoEditar = true;
+      $('#exampleModal').modal('show');
     },
-    editarNota: function editarNota(nota) {
+    editarNota: function editarNota(category) {
       var _this3 = this;
 
       var params = {
-        nombre: nota.nombre,
-        descripcion: nota.descripcion
+        name: category.name,
+        description: category.description
       };
-      axios.put("/notas/".concat(nota.id), params).then(function (res) {
+      axios.put("/categories/".concat(category.id), params).then(function (res) {
         _this3.modoEditar = false;
 
-        var index = _this3.notas.findIndex(function (item) {
-          return item.id === nota.id;
+        var index = _this3.categories.findIndex(function (item) {
+          return item.id === category.id;
         });
 
-        _this3.notas[index] = res.data;
+        _this3.categories[index] = res.data;
+        $('#exampleModal').modal('hide');
+        toastr__WEBPACK_IMPORTED_MODULE_1___default.a.info('Nueva categoria editadas');
       });
     },
-    eliminarNota: function eliminarNota(nota, index) {
+    eliminarNota: function eliminarNota(category, index) {
       var _this4 = this;
 
-      var confirmacion = confirm("Eliminar nota ".concat(nota.nombre));
+      var confirmacion = confirm("Eliminar category ".concat(category.name));
 
       if (confirmacion) {
-        axios["delete"]("/notas/".concat(nota.id)).then(function () {
-          _this4.notas.splice(index, 1);
+        axios["delete"]("/categories/".concat(category.id)).then(function () {
+          _this4.categories.splice(index, 1);
+
+          toastr__WEBPACK_IMPORTED_MODULE_1___default.a.error('Categoria eliminada');
         });
       }
     },
     cancelarEdicion: function cancelarEdicion() {
-      this.modoEditar = false;
-      this.nota = {
-        nombre: '',
-        descripcion: ''
+      $('#exampleModal').modal('hide');
+      this.category = {
+        name: '',
+        description: ''
       };
+      this.modoEditar = false;
     }
   }
 });
@@ -53385,20 +53386,16 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-secondary",
-                            attrs: { type: "submit", "data-dismiss": "modal" },
+                            attrs: { type: "button", "data-dismiss": "modal" },
                             on: { click: _vm.cancelarEdicion }
                           },
-                          [_vm._v("Cancelar")]
+                          [
+                            _c("i", { staticClass: "fa fa-close" }),
+                            _vm._v(" Cancelar")
+                          ]
                         ),
                         _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-warning",
-                            attrs: { type: "submit" }
-                          },
-                          [_vm._v("Editar")]
-                        )
+                        _vm._m(2)
                       ])
                     ]
                   )
@@ -53475,7 +53472,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _vm._m(2)
+                      _vm._m(3)
                     ]
                   )
             ])
@@ -53487,12 +53484,12 @@ var render = function() {
     _c("hr"),
     _vm._v(" "),
     _c("table", { staticClass: "table", attrs: { id: "example" } }, [
-      _vm._m(3),
+      _vm._m(4),
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.categories, function(category) {
-          return _c("tr", [
+        _vm._l(_vm.categories, function(category, index) {
+          return _c("tr", { key: index }, [
             _c("th", { attrs: { scope: "row" } }, [
               _vm._v(_vm._s(category.id))
             ]),
@@ -53501,7 +53498,47 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(category.description))]),
             _vm._v(" "),
-            _vm._m(4, true)
+            _c("td", [
+              _vm._m(5, true),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning btn-sm",
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "tooltip",
+                    "data-placement": "top",
+                    title: "Editar"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.editarFormulario(category)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-pencil" })]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger btn-sm",
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "tooltip",
+                    "data-placement": "top",
+                    title: "Eliminar"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.eliminarNota(category, index)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-trash" })]
+              )
+            ])
           ])
         }),
         0
@@ -53556,6 +53593,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-warning", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fa fa-save" }), _vm._v(" Editar")]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-footer" }, [
       _c(
         "button",
@@ -53563,7 +53610,7 @@ var staticRenderFns = [
           staticClass: "btn btn-secondary",
           attrs: { type: "button", "data-dismiss": "modal" }
         },
-        [_c("i", { staticClass: "fa fa-close" }), _vm._v(" Close")]
+        [_c("i", { staticClass: "fa fa-close" }), _vm._v(" Cancelar")]
       ),
       _vm._v(" "),
       _c(
@@ -53593,49 +53640,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-info btn-sm",
-          attrs: {
-            type: "button",
-            "data-toggle": "tooltip",
-            "data-placement": "top",
-            title: "Mostrar"
-          }
-        },
-        [_c("i", { staticClass: "fa fa-eye" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-warning btn-sm",
-          attrs: {
-            type: "button",
-            "data-toggle": "tooltip",
-            "data-placement": "top",
-            title: "Editar"
-          }
-        },
-        [_c("i", { staticClass: "fa fa-pencil" })]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-danger btn-sm",
-          attrs: {
-            type: "button",
-            "data-toggle": "tooltip",
-            "data-placement": "top",
-            title: "Eliminar"
-          }
-        },
-        [_c("i", { staticClass: "fa fa-trash" })]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-info btn-sm",
+        attrs: {
+          type: "button",
+          "data-toggle": "tooltip",
+          "data-placement": "top",
+          title: "Mostrar"
+        }
+      },
+      [_c("i", { staticClass: "fa fa-eye" })]
+    )
   }
 ]
 render._withStripped = true

@@ -3,7 +3,6 @@
     <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i> Crear</button>
 
-  
     <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -22,15 +21,11 @@
             placeholder="Nombre de la category" v-model="category.name">
           <input type="text" class="form-control mb-2"
             placeholder="Descripción de la category" v-model="category.description">
-          
         </div>
 
         <div class="modal-footer">
-          <!-- <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-warning">Editar</button> -->
-
-          <button class="btn btn-secondary" type="submit" data-dismiss="modal" @click="cancelarEdicion">Cancelar</button>
-          <button class="btn btn-warning" type="submit">Editar</button>
+          <button type="button" class="btn btn-secondary" @click="cancelarEdicion" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
+          <button class="btn btn-warning" type="submit"><i class="fa fa-save"></i> Editar</button>
         </div>
       </form>
 
@@ -44,8 +39,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> Cancelar</button>
           <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Save</button>
         </div>
       </form>
@@ -63,15 +57,16 @@
         <th scope="col">Acciones</th>
        </tr>
      </thead>
+
      <tbody>
-       <tr v-for= "category in categories">
-         <th scope="row">{{ category.id}}</th>
-         <td>{{category.name}}</td>
-         <td>{{category.description}}</td>
-         <td>
-             <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Mostrar"><i class="fa fa-eye"></i></button>
-             <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i></button>
-             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fa fa-trash"></i></button>
+        <tr v-for="(category, index) in categories" :key="index" >
+          <th scope="row">{{ category.id}}</th>
+          <td>{{category.name}}</td>
+          <td>{{category.description}}</td>
+          <td>
+             <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Mostrar" ><i class="fa fa-eye"></i></button>
+             <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Editar" @click="editarFormulario(category)"><i class="fa fa-pencil"></i></button>
+             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Eliminar" @click="eliminarNota(category, index)"><i class="fa fa-trash"></i></button>
          </td>
        </tr>
 
@@ -147,41 +142,43 @@
           },
 
           editarFormulario(item){
-            this.nota.nombre = item.nombre;
-            this.nota.descripcion = item.descripcion;
-            this.nota.id = item.id;
+            this.category.name = item.name;
+            this.category.description = item.description;
+            this.category.id = item.id;
             this.modoEditar = true;
+
+            $('#exampleModal').modal('show');
           },
 
-          editarNota(nota){
-            const params = {nombre: nota.nombre, descripcion: nota.descripcion};
-            axios.put(`/notas/${nota.id}`, params)
+          editarNota(category){
+            const params = {name: category.name, description: category.description};
+            axios.put(`/categories/${category.id}`, params)
               .then(res=>{
                 this.modoEditar = false;
-                const index = this.notas.findIndex(item => item.id === nota.id);
-                this.notas[index] = res.data;
+                const index = this.categories.findIndex(item => item.id === category.id);
+                this.categories[index] = res.data;
+
+                $('#exampleModal').modal('hide');
+                toastr.info('Nueva categoria editadas');
               })
           },
 
-          eliminarNota(nota, index){
-            const confirmacion = confirm(`Eliminar nota ${nota.nombre}`);
+          eliminarNota(category, index){
+            const confirmacion = confirm(`Eliminar category ${category.name}`);
             if(confirmacion){
-              axios.delete(`/notas/${nota.id}`)
+              axios.delete(`/categories/${category.id}`)
                 .then(()=>{
-                  this.notas.splice(index, 1);
+                  this.categories.splice(index, 1);
+                  toastr.error('Categoria eliminada');
                 })
             }
           },
 
           cancelarEdicion(){
+            $('#exampleModal').modal('hide');
+            this.category = {name: '', description: ''};
             this.modoEditar = false;
-            this.nota = {nombre: '', descripcion: ''};
           }
-
-
         }
-
-
-
     }
 </script>
