@@ -1889,6 +1889,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -1896,7 +1916,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      categories: []
+      categories: [],
+      modoEditar: false,
+      category: {
+        name: '',
+        description: ''
+      }
     };
   },
   methods: {
@@ -1915,6 +1940,67 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.mytable();
       });
+    },
+    // new methods
+    agregar: function agregar() {
+      var _this2 = this;
+
+      if (this.category.name.trim() === '' || this.category.description.trim() === '') {
+        alert('Debes completar todos los campos antes de guardar');
+        return;
+      }
+
+      var categoryNueva = this.category;
+      this.category = {
+        name: '',
+        description: ''
+      };
+      axios.post('categories', categoryNueva).then(function (res) {
+        var categoryServidor = res.data;
+
+        _this2.categories.push(categoryNueva);
+      });
+    },
+    editarFormulario: function editarFormulario(item) {
+      this.nota.nombre = item.nombre;
+      this.nota.descripcion = item.descripcion;
+      this.nota.id = item.id;
+      this.modoEditar = true;
+    },
+    editarNota: function editarNota(nota) {
+      var _this3 = this;
+
+      var params = {
+        nombre: nota.nombre,
+        descripcion: nota.descripcion
+      };
+      axios.put("/notas/".concat(nota.id), params).then(function (res) {
+        _this3.modoEditar = false;
+
+        var index = _this3.notas.findIndex(function (item) {
+          return item.id === nota.id;
+        });
+
+        _this3.notas[index] = res.data;
+      });
+    },
+    eliminarNota: function eliminarNota(nota, index) {
+      var _this4 = this;
+
+      var confirmacion = confirm("Eliminar nota ".concat(nota.nombre));
+
+      if (confirmacion) {
+        axios["delete"]("/notas/".concat(nota.id)).then(function () {
+          _this4.notas.splice(index, 1);
+        });
+      }
+    },
+    cancelarEdicion: function cancelarEdicion() {
+      this.modoEditar = false;
+      this.nota = {
+        nombre: '',
+        descripcion: ''
+      };
     }
   }
 });
@@ -52668,24 +52754,176 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table", attrs: { id: "example" } }, [
-    _vm._m(0),
+  return _c("div", [
+    _vm.modoEditar
+      ? _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.editarNota(_vm.category)
+              }
+            }
+          },
+          [
+            _c("h3", [_vm._v("Editar categoria")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.category.name,
+                  expression: "category.name"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Nombre de la category" },
+              domProps: { value: _vm.category.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.category, "name", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.category.description,
+                  expression: "category.description"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: {
+                type: "text",
+                placeholder: "Descripción de la category"
+              },
+              domProps: { value: _vm.category.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.category, "description", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-warning", attrs: { type: "submit" } },
+              [_vm._v("Editar")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                attrs: { type: "submit" },
+                on: { click: _vm.cancelarEdicion }
+              },
+              [_vm._v("Cancelar")]
+            )
+          ]
+        )
+      : _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.agregar($event)
+              }
+            }
+          },
+          [
+            _c("h3", [_vm._v("Agregar categoria")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.category.name,
+                  expression: "category.name"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Nombre de la category" },
+              domProps: { value: _vm.category.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.category, "name", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.category.description,
+                  expression: "category.description"
+                }
+              ],
+              staticClass: "form-control mb-2",
+              attrs: {
+                type: "text",
+                placeholder: "Descripción de la category"
+              },
+              domProps: { value: _vm.category.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.category, "description", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+              [_vm._v("Agregar")]
+            )
+          ]
+        ),
     _vm._v(" "),
-    _c(
-      "tbody",
-      _vm._l(_vm.categories, function(category) {
-        return _c("tr", [
-          _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(category.id))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(category.name))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(category.description))]),
-          _vm._v(" "),
-          _vm._m(1, true)
-        ])
-      }),
-      0
-    )
+    _c("hr"),
+    _vm._v(" "),
+    _c("table", { staticClass: "table", attrs: { id: "example" } }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.categories, function(category) {
+          return _c("tr", [
+            _c("th", { attrs: { scope: "row" } }, [
+              _vm._v(_vm._s(category.id))
+            ]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(category.name))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(category.description))]),
+            _vm._v(" "),
+            _vm._m(1, true)
+          ])
+        }),
+        0
+      )
+    ])
   ])
 }
 var staticRenderFns = [

@@ -49,7 +49,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = 'slug-4';
+        $category->description = $request->description;
+        // // $category->user_id = auth()->id();
+        $category->save();
+
+        return $category;
     }
 
     /**

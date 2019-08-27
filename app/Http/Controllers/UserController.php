@@ -49,7 +49,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Category();
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->user_id = auth()->id();
+        $category->save();
+
+        return $nota;
     }
 
     /**
@@ -83,7 +89,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+
+        return $category;
     }
 
     /**
@@ -94,6 +105,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
     }
 }
