@@ -19,8 +19,13 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+import Gate from "./Gate";
+Vue.prototype.$gate = new Gate(window.user);
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('table-component', require('./components/TableComponent.vue').default);
+Vue.component('user-component', require('./components/UserComponent.vue').default);
+Vue.component('category-component', require('./components/CategoryComponent.vue').default);
 
 
 /**

@@ -4,15 +4,15 @@
        <tr>
          <th scope="col">#</th>
          <th scope="col">Name</th>
-         <th scope="col">Email</th>
+         <th scope="col">Descripción</th>
         <th scope="col">Acciones</th>
        </tr>
      </thead>
      <tbody>
-       <tr v-for= "user in users">
-         <th scope="row">{{ user.id}}</th>
-         <td>{{user.name}}</td>
-         <td>{{user.email}}</td>
+       <tr v-for= "category in categories">
+         <th scope="row">{{ category.id}}</th>
+         <td>{{category.name}}</td>
+         <td>{{category.description}}</td>
          <td>
              <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Mostrar"><i class="fa fa-eye"></i></button>
              <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil"></i></button>
@@ -30,12 +30,12 @@
     import datables from 'datatables';
     export default {
         mounted() {
-            this.getUsers()
+            this.getCategories()
         },
 
         data(){
             return{
-                users: []
+                categories: []
             }
         },
 
@@ -51,10 +51,10 @@
                });
             },
 
-           getUsers(){
-               var urlUsers= "users";
-               axios.get(urlUsers).then(response=>{
-               this.users = response.data;
+           getCategories(){
+               var urlCategories= "categories";
+               axios.get(urlCategories).then(response=>{
+               this.categories = response.data;
                this.mytable()
 
            });
