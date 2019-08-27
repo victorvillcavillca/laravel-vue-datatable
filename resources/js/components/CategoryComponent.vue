@@ -1,23 +1,58 @@
 <template>
   <div>
-    <form @submit.prevent="editarNota(category)" v-if="modoEditar">
-      <h3>Editar categoria</h3>
-      <input type="text" class="form-control mb-2"
-        placeholder="Nombre de la category" v-model="category.name">
-      <input type="text" class="form-control mb-2"
-        placeholder="Descripción de la category" v-model="category.description">
-      <button class="btn btn-warning" type="submit">Editar</button>
-      <button class="btn btn-danger" type="submit"
-        @click="cancelarEdicion">Cancelar</button>
-    </form>
-    <form @submit.prevent="agregar" v-else>
-      <h3>Agregar categoria</h3>
-      <input type="text" class="form-control mb-2"
-        placeholder="Nombre de la category" v-model="category.name">
-      <input type="text" class="form-control mb-2"
-        placeholder="Descripción de la category" v-model="category.description">
-      <button class="btn btn-primary" type="submit">Agregar</button>
-    </form>
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i> Crear</button>
+
+  
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <form @submit.prevent="editarNota(category)" v-if="modoEditar">
+        <div class="modal-body">
+          <h3>Editar categoria</h3>
+            <input type="text" class="form-control mb-2"
+            placeholder="Nombre de la category" v-model="category.name">
+          <input type="text" class="form-control mb-2"
+            placeholder="Descripción de la category" v-model="category.description">
+          
+        </div>
+
+        <div class="modal-footer">
+          <!-- <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-warning">Editar</button> -->
+
+          <button class="btn btn-secondary" type="submit" data-dismiss="modal" @click="cancelarEdicion">Cancelar</button>
+          <button class="btn btn-warning" type="submit">Editar</button>
+        </div>
+      </form>
+
+      <form @submit.prevent="agregar" v-else>
+        <div class="modal-body">
+          <h3>Agregar categoria</h3>
+          <input type="text" class="form-control mb-2"
+            placeholder="Nombre de la category" v-model="category.name">
+          <input type="text" class="form-control mb-2"
+            placeholder="Descripción de la category" v-model="category.description">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
     <hr>
    <table class="table" id="example">
      <thead class="thead-dark">
@@ -51,21 +86,26 @@
 
     export default {
         mounted() {
-          this.getCategories()
+          
+          this.getCategories();
+
+          
         },
 
         data() {
           return{
             categories: [],
             modoEditar: false,
-            category: {name: '', description: ''}
+            category: {name: '', description: ''},
+            table : null,
           }
         },
 
         methods:{
           mytable(){
             $(function() {
-              $('#example').DataTable();
+              // $('#example').DataTable();
+              this.table = $('#example').DataTable();
 
               $('[data-toggle="tooltip"]').tooltip()
             });
@@ -91,6 +131,15 @@
               .then((res) =>{
                 const categoryServidor = res.data;
                 this.categories.push(categoryNueva);
+
+                $('#exampleModal').modal('hide');
+              // this.table.ajax.reload();
+
+                // this.getCategories();
+                // $('#example').DataTable().data.reload();
+
+                // $('#example').DataTable().draw();
+                // .draw();
               })
           },
 

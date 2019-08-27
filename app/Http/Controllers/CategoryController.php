@@ -51,9 +51,8 @@ class CategoryController extends Controller
     {
         $category = new Category();
         $category->name = $request->name;
-        $category->slug = 'slug-4';
+        $category->slug = str_slug($request->name);
         $category->description = $request->description;
-        // // $category->user_id = auth()->id();
         $category->save();
 
         return $category;
