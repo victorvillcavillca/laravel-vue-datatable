@@ -25,5 +25,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController')->middleware('auth');
 Route::resource('categories', 'CategoryController')->middleware('auth');
-// Route::resource('categories', 'CategoryController')->middleware('auth');
-// Route::resource('users', 'UsersController');
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
+    Route::view('/', 'admin.home');
+    Route::view('home', 'admin.home')->name('admin');
+    
+    Route::get('categories/data', 'Admin\CategoryController@data');
+	Route::resource('categories',  'Admin\CategoryController');
+});

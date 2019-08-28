@@ -25,7 +25,8 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            return Category::all();
+            return Category::orderBy('id', 'ASC')->get();
+            // $specialty_areas = SpecialtyArea::orderBy('id', 'DESC')->get();
         }else{
             return view('category');
         }
@@ -38,7 +39,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -107,5 +108,21 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->delete();
+    }
+
+    /**
+     * Show a list of all the Expenses posts formatted for Datatables.
+     *
+     * @return Datatables JSON
+     */
+    public function data()
+    {
+        $query = Category::select('id', 'name', 'created_at');
+
+        return datatables()
+            ->eloquent($query)
+            ->addColumn('btn', 'admin.tags.partials.actions')
+            ->rawColumns(['btn'])
+            ->toJson();
     }
 }

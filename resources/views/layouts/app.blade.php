@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    @yield('styles')
 </head>
 <body>
     <div id="app">
@@ -76,5 +78,18 @@
             @yield('content')
         </main>
     </div>
+
+    <!-- JavaScript files-->
+    {{-- <script src="{{ asset('vendor/admin-dash/vendor/jquery/jquery.min.js') }}"></script> --}}
+    {{-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> --}}
+    {{-- <script src="{{ asset('vendor/admin-dash/vendor/popper.js/umd/popper.min.js') }}"> </script>
+    <script src="{{ asset('vendor/admin-dash/vendor/bootstrap/js/bootstrap.min.js') }}"></script> --}}
+
+
+    <!-- JavaScript files-->
+    <script src="{{ asset('vendor/admin-dash/vendor/jquery/jquery.min.js') }}"></script>
+
+
+    @yield('scripts')
 </body>
 </html>
