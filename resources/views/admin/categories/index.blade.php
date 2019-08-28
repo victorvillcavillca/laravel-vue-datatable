@@ -3,7 +3,7 @@
 @section('styles')
   <!-- DataTables -->
   {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"> --}}
-  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
+  {{-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">  --}}
   {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" /> --}}
 @endsection
 
@@ -11,11 +11,11 @@
 <div class="container-fluid mt-5">
 
     <!-- Alerts -->
-    {{-- @include('admin.partials.alerts') --}}
+    @include('admin.partials.alerts')
     <!-- /.Alerts -->
 
     <!-- Heading -->
-    {{-- @include('admin.categories.partials.heading') --}}
+    @include('admin.categories.partials.heading')
     <!-- Heading -->
 
     <!--Grid row-->
@@ -70,19 +70,21 @@
 @endsection
 
 @section('scripts')
-  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" ></script>
+  {{-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script> --}}
+  {{-- <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" ></script> --}}
 
   {{-- <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js" ></script>
   <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js" ></script> --}}
 
+  {{-- <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js') }}"></script> --}}
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script> --}}
   <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-  {{-- <script src="{{ asset('js/toastr.min.js') }}"></script> --}}
 
   <!-- page script -->
   <script>
+    
   $(document).ready(function() {
+      
      let category_id = 0;
 
      let table = $('#myTable').DataTable({
@@ -123,6 +125,7 @@
         axios.delete(url).then(response => { //deleting
           $('#modalDelete').modal('hide');
           table.ajax.reload();
+          
           toastr.error(response.data.message); //message
         });
       });

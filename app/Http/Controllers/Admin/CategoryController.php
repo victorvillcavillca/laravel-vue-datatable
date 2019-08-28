@@ -48,12 +48,12 @@ class CategoryController extends Controller
      */
     public function store(CategoryStoreRequest $request)
     {
-        // $category = Category::create($request->all());
-        $category = new Category();
-        $category->name = $request->name;
-        $category->slug = str_slug($request->name);
-        $category->description = $request->description;
-        $category->save();
+        $category = Category::create($request->all());
+        // $category = new Category();
+        // $category->name = $request->name;
+        // $category->slug = str_slug($request->name);
+        // $category->description = $request->description;
+        // $category->save();
 
         return redirect()->route('categories.index')
                         ->with('info','Categoría creada con éxito.');
@@ -117,8 +117,8 @@ class CategoryController extends Controller
         return array('message' => $message);
     }
 
-     /**
-     * Show a list of all the Expenses posts formatted for Datatables.
+    /**
+     * Show a list of all the Categories formatted for Datatables.
      *
      * @return Datatables JSON
      */
