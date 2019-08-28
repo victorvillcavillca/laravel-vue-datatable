@@ -19,9 +19,18 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{{ asset('vendor/admin-dash/css/style.default.css') }}" id="theme-stylesheet">
+
     @yield('styles')
 </head>
 <body>
+    <!-- Side Navbar -->
+    @include('layouts.partials-admin.sidebar')
+    <!-- ./Side Navbar -->
+
+    <div class="page d-flex flex-column justify-content-between h-screen">
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -74,11 +83,23 @@
             </div>
         </nav>
 
+        <!-- navbar-->
+        <header class="header">
+            @include('layouts.partials-admin.nav')
+        </header>
+        <!-- ./navbar-->
+
         <main class="py-4">
             @yield('content')
         </main>
-    </div>
 
+        <!-- Footer -->
+        <footer class="main-footer">
+            @include('layouts.partials-admin.footer')
+        </footer>
+        <!-- ./Footer -->
+    </div>
+    </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" ></script>
     @yield('scripts')

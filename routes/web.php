@@ -30,6 +30,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::view('/', 'admin.home');
     Route::view('home', 'admin.home')->name('admin');
     
+    Route::resource('profiles',  'Admin\ProfileController');
+
+    Route::get('tags/data', 'Admin\TagController@data');
+    Route::resource('tags', 'Admin\TagController');
+
+    Route::get('posts/data', 'Admin\PostController@data');
+    Route::resource('posts',       'Admin\PostController');
+
     Route::get('categories/data', 'Admin\CategoryController@data');
 	Route::resource('categories',  'Admin\CategoryController');
 });
